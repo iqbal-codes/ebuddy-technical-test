@@ -1,11 +1,12 @@
-import { UserGetListParams, UserUpdateData } from "@/entities/user.interface";
+import { UserUpdateData } from "@/entities/user.interface";
 import { axiosInstance } from ".";
 import axios from "axios";
+import { GetListParams } from "@/entities/global.interface";
 
 export const fetchUserData = async ({
   page = 1,
   limit = 10,
-}: UserGetListParams) => {
+}: GetListParams) => {
   try {
     const response = await axiosInstance.get("/fetch-user-data", {
       params: {

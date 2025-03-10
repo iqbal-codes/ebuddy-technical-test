@@ -1,11 +1,9 @@
+import { TableColumns } from "@/entities/global.interface";
 import { TableCell, TableRow as MUITableRow } from "@mui/material";
 
 interface TableRowProps<T extends { id: string | number }> {
   data: T;
-  columns: {
-    label: string;
-    name: keyof T;
-  }[];
+  columns: TableColumns<T>[];
 }
 
 const TableRow = <T extends { id: string | number }>({
@@ -15,10 +13,15 @@ const TableRow = <T extends { id: string | number }>({
   return (
     <MUITableRow key={data.id}>
       {columns.map((column) => (
-        <TableCell key={column.name as string}>{String(data[column.name])}</TableCell>
+        <TableCell key={column.name as string || column.label}>
+          {column.render
+            ? column.render(data[column.name!], data)
+            : String(data[column.name!])}
+        </TableCell>
       ))}
     </MUITableRow>
   );
 };
 
 export default TableRow;
+

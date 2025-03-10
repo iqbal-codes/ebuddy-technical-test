@@ -1,15 +1,24 @@
-import { Table, TableBody, TableContainer, Paper } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import TableHeader from "../molecules/TableHeader";
 import TableRow from "../molecules/TableRow";
 import TablePaginationControl from "../molecules/TablePaginationControl";
 import { User } from "@/entities/user.interface";
 import { ListResponse, TableColumns } from "@/entities/global.interface";
+import { format, formatDistance } from "date-fns";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface UserTableProps {
   users: User[];
   pagination: ListResponse<User>["pagination"];
-  onPageChange: (event: unknown, newPage: number) => void;
-  onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onPageChange: (_event: unknown, _newPage: number) => void;
+  onRowsPerPageChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
+  onEditUser: (_user: User) => void;
 }
 
 const UserTable = ({
@@ -17,6 +26,7 @@ const UserTable = ({
   pagination,
   onPageChange,
   onRowsPerPageChange,
+  onEditUser,
 }: UserTableProps) => {
   const columns: TableColumns<User>[] = [
     { label: "Name", name: "name" },
@@ -32,17 +42,26 @@ const UserTable = ({
     {
       label: "Recently Active",
       name: "recentlyActive",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) =>
+        formatDistance(new Date(value), new Date(), { addSuffix: true }),
     },
     {
       label: "Created At",
       name: "createdAt",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => format(new Date(value), "dd/MM/yyyy HH:mm:ss"),
     },
     {
       label: "Updated At",
       name: "updatedAt",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => format(new Date(value), "dd/MM/yyyy HH:mm:ss"),
+    },
+    {
+      label: "Actions",
+      render: (_value, data) => (
+        <IconButton color="primary" onClick={() => onEditUser(data)}>
+          <EditIcon />
+        </IconButton>
+      ),
     },
   ];
 
@@ -77,3 +96,4 @@ const UserTable = ({
 };
 
 export default UserTable;
+

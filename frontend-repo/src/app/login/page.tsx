@@ -12,15 +12,8 @@ import {
   Button,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { LoginFormData, loginSchema } from "@/schemas/user.schema";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,7 +35,7 @@ export default function LoginPage() {
       );
       const token = await userCredential.user.getIdToken();
       localStorage.setItem("token", token);
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.log({ error });
       setError("root", {

@@ -1,13 +1,13 @@
+import { TableColumns } from "@/entities/global.interface";
 import { TableCell, TableHead, TableRow } from "@mui/material";
 
-interface TableHeaderProps {
-  columns: {
-    label: string;
-    name: string;
-  }[];
+interface TableHeaderProps<T extends { id: string | number }> {
+  columns: TableColumns<T>[];
 }
 
-const TableHeader = ({ columns }: TableHeaderProps) => {
+const TableHeader = <T extends { id: string | number }>({
+  columns,
+}: TableHeaderProps<T>) => {
   return (
     <TableHead>
       <TableRow>
@@ -20,3 +20,4 @@ const TableHeader = ({ columns }: TableHeaderProps) => {
 };
 
 export default TableHeader;
+

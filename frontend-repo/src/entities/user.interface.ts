@@ -11,25 +11,3 @@ export interface User {
 }
 
 export type UserUpdateData = Partial<Omit<User, "id" | "createdAt">>;
-
-export interface UserListResponse {
-  data: User[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-  error?: string;
-}
-
-export interface UserGetListParams {
-  page?: number;
-  limit?: number;
-}
-
-export interface UserTableColumns {
-  name: keyof User;
-  label: string;
-  render?: (value: string) => string;
-}

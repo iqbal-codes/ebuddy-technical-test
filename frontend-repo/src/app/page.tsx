@@ -1,29 +1,58 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AuthProvider from "@/providers/AuthProvider";
 import { Alert, Box } from "@mui/material";
-import Header from "@/components/organisms/Header";
+import { AppDispatch, RootState } from "@/store/store";
 import {
   fetchUserData,
+  resetUpdateState,
   setPage,
   setRowsPerPage,
+  updateUserData,
 } from "@/store/slices/userSlice";
-import { AppDispatch, RootState } from "@/store/store";
+import { User, UserUpdateData } from "@/entities/user.interface";
+import AuthProvider from "@/providers/AuthProvider";
+import Header from "@/components/organisms/Header";
 import UserTable from "@/components/organisms/UserTable";
+import EditUserModal from "@/components/organisms/EditUserModal";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const {
     data: userData,
-    error,
+    fetchError,
     pagination,
   } = useSelector((state: RootState) => state.user);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUserData({ page: pagination.page, limit: pagination.limit }));
   }, [dispatch, pagination.page, pagination.limit]);
+
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    dispatch(resetUpdateState());
+    setSelectedUser(null);
+    setIsEditModalOpen(false);
+  };
+
+  const handleUpdateUser = async (data: UserUpdateData) => {
+    try {
+      await dispatch(updateUserData(data)).unwrap();
+      dispatch(
+        fetchUserData({ page: pagination.page, limit: pagination.limit })
+      );
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     dispatch(setPage(newPage));
@@ -39,17 +68,27 @@ export default function Home() {
     <AuthProvider>
       <Box sx={{ p: 3 }}>
         <Header title="User Dashboard" />
-        {error ? (
-          <Alert severity="error">{error}</Alert>
+        {fetchError ? (
+          <Alert severity="error">{fetchError}</Alert>
         ) : (
-          <UserTable
-            users={userData}
-            pagination={pagination}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          <>
+            <UserTable
+              users={userData}
+              pagination={pagination}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              onEditUser={handleEditUser}
+            />
+            <EditUserModal
+              open={isEditModalOpen}
+              user={selectedUser}
+              onClose={handleCloseModal}
+              onSubmit={handleUpdateUser}
+            />
+          </>
         )}
       </Box>
     </AuthProvider>
   );
 }
+
