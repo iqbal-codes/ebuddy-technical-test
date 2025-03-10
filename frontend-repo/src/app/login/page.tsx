@@ -3,8 +3,14 @@
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
-import { Container, Box, Typography, TextField, Paper } from "@mui/material";
-import Button from "@/components/atoms/Button";
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Paper,
+  Button,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +44,7 @@ export default function LoginPage() {
       localStorage.setItem("token", token);
       router.push("/dashboard");
     } catch (error) {
+      console.log({ error });
       setError("root", {
         type: "manual",
         message: "Invalid email or password",
@@ -107,7 +114,7 @@ export default function LoginPage() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              isLoading={isSubmitting}
+              loading={isSubmitting}
             >
               Sign In
             </Button>

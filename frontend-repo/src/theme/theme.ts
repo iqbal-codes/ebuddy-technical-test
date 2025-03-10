@@ -15,6 +15,7 @@ declare module '@mui/material' {
 
 const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
       main: '#1976d2',
       light: '#42a5f5',
@@ -25,9 +26,17 @@ const theme = createTheme({
       light: '#ba68c8',
       dark: '#7b1fa2',
     },
+    background: {
+      default: '#ffffff',
+      paper: '#f5f5f5',
+    },
+    text: {
+      primary: '#000000',
+      secondary: '#666666',
+    },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: 'var(--font-geist-sans), "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
       fontSize: '2.5rem',
       fontWeight: 500,
@@ -44,8 +53,15 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
           textTransform: 'none',
+        },
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#ffffff',
+          color: '#000000',
         },
       },
     },

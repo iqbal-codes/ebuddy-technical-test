@@ -27,3 +27,9 @@ export interface UserGetListParams {
   page?: number;
   limit?: number;
 }
+
+export interface UserTableColumns {
+  name: keyof User;
+  label: string;
+  render?: (value: string) => string;
+}
