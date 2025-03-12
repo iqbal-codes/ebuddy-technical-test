@@ -1,5 +1,5 @@
-import { TableColumns } from "@/entities/global.interface";
 import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableColumns } from "shared-types";
 
 interface TableHeaderProps<T extends { id: string | number }> {
   columns: TableColumns<T>[];

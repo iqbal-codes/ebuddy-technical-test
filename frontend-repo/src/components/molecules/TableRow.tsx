@@ -1,5 +1,5 @@
-import { TableColumns } from "@/entities/global.interface";
 import { TableCell, TableRow as MUITableRow } from "@mui/material";
+import { TableColumns } from "shared-types";
 
 interface TableRowProps<T extends { id: string | number }> {
   data: T;

@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { User, UserUpdateData } from "@/entities/user.interface";
 import * as userApi from "@/apis/userApi";
-import { GetListParams } from "@/entities/global.interface";
+import { User, UserUpdateData, GetListParams } from "shared-types";
 
 interface UserState {
   data: User[];

@@ -4,8 +4,8 @@ interface TablePaginationControlProps {
   count: number;
   page: number;
   rowsPerPage: number;
-  onPageChange: (event: unknown, newPage: number) => void;
-  onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onPageChange: (_event: unknown, _newPage: number) => void;
+  onRowsPerPageChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
   rowsPerPageOptions?: number[];
 }
 

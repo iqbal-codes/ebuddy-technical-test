@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, Box } from "@mui/material";
 import { AppDispatch, RootState } from "@/store/store";
@@ -16,7 +16,7 @@ import Header from "@/components/organisms/Header";
 import UserTable from "@/components/organisms/UserTable";
 import EditUserModal from "@/components/organisms/EditUserModal";
 import { useSnackbar } from "@/hooks/useSnackbar";
-import { User, UserUpdateData } from "@monorepo/shared-types";
+import { User, UserUpdateData } from "shared-types";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,13 +25,21 @@ export default function Home() {
     data: userData,
     fetchError,
     pagination,
+    fetchLoading
   } = useSelector((state: RootState) => state.user);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchUsers = useCallback(() => {
     dispatch(fetchUserData({ page: pagination.page, limit: pagination.limit }));
   }, [dispatch, pagination.page, pagination.limit]);
+
+  useEffect(() => {
+    fetchUsers();
+
+    const intervalId = setInterval(fetchUsers, 30000);
+    return () => clearInterval(intervalId);
+  }, [fetchUsers]);
 
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
@@ -81,6 +89,7 @@ export default function Home() {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               onEditUser={handleEditUser}
+              loading={fetchLoading}
             />
             <EditUserModal
               open={isEditModalOpen}

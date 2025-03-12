@@ -1,7 +1,6 @@
-import { UserUpdateData } from "@/entities/user.interface";
 import { axiosInstance } from ".";
 import axios from "axios";
-import { GetListParams } from "@/entities/global.interface";
+import { GetListParams, UserUpdateData } from "shared-types";
 
 export const fetchUserData = async ({
   page = 1,

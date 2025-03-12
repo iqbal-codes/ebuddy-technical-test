@@ -1,4 +1,12 @@
-import { Table, TableBody, TableContainer, Paper, Button } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  Paper,
+  Button,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import TableHeader from "../molecules/TableHeader";
 import TableRow from "../molecules/TableRow";
 import TablePaginationControl from "../molecules/TablePaginationControl";
@@ -12,6 +20,7 @@ interface UserTableProps {
   onPageChange: (_event: unknown, _newPage: number) => void;
   onRowsPerPageChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
   onEditUser: (_user: User) => void;
+  loading: boolean;
 }
 
 const UserTable = ({
@@ -20,6 +29,7 @@ const UserTable = ({
   onPageChange,
   onRowsPerPageChange,
   onEditUser,
+  loading,
 }: UserTableProps) => {
   const columns: TableColumns<User>[] = [
     { label: "Name", name: "name" },
@@ -60,7 +70,25 @@ const UserTable = ({
         padding: "16px",
       }}
     >
-      <TableContainer>
+      <TableContainer sx={{ position: "relative" }}>
+        {loading && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              zIndex: 1,
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
         <Table stickyHeader>
           <TableHeader columns={columns} />
           <TableBody>
