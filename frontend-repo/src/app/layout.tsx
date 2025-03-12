@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/providers/ReduxProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { SnackbarProvider } from "@/contexts/SnackbarContext";
+import { DateProvider } from "@/providers/DateProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +28,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReduxProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </ReduxProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <DateProvider>
+          <ReduxProvider>
+            <ThemeProvider>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </ThemeProvider>
+          </ReduxProvider>
+        </DateProvider>
       </body>
     </html>
   );
 }
+

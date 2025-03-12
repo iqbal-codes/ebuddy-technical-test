@@ -21,6 +21,7 @@
   },
   "workspaces": [
     "frontend-repo",
-    "backend-repo"
+    "backend-repo",
+    "packages/*"
   ]
 }

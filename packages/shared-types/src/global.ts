@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export interface ListResponse<T> {
   data: T[];
   pagination: {
@@ -17,8 +15,7 @@ export interface GetListParams {
 }
 
 export interface TableColumns<T> {
-  name?: keyof T;
   label: string;
-  render?: (_value: T[keyof T], _data: T) => string | ReactNode;
+  name?: keyof T;
+  render?: (value: any, data: T) => React.ReactNode;
 }
-

@@ -11,14 +11,16 @@ import {
   setRowsPerPage,
   updateUserData,
 } from "@/store/slices/userSlice";
-import { User, UserUpdateData } from "@/entities/user.interface";
 import AuthProvider from "@/providers/AuthProvider";
 import Header from "@/components/organisms/Header";
 import UserTable from "@/components/organisms/UserTable";
 import EditUserModal from "@/components/organisms/EditUserModal";
+import { useSnackbar } from "@/hooks/useSnackbar";
+import { User, UserUpdateData } from "@monorepo/shared-types";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
+  const { showSnackbar } = useSnackbar();
   const {
     data: userData,
     fetchError,
@@ -48,6 +50,7 @@ export default function Home() {
       dispatch(
         fetchUserData({ page: pagination.page, limit: pagination.limit })
       );
+      showSnackbar("User updated successfully", "success");
       handleCloseModal();
     } catch (error) {
       console.error("Error updating user:", error);

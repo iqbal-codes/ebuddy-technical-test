@@ -26,8 +26,12 @@ export const fetchUserData = async ({
 };
 
 export const updateUserData = async (data: UserUpdateData) => {
+  const { id, ...payload } = data;
   try {
-    const response = await axiosInstance.put("/update-user-data", data);
+    const response = await axiosInstance.put(
+      `/update-user-data/${id}`,
+      payload
+    );
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
